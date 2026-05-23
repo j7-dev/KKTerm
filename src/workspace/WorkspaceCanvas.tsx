@@ -1,7 +1,6 @@
 import { connectionTypeForTab } from "../connections/utils";
 import {
   dispatchConnectionTabContextMenu,
-  isConnectionTabContextMenuConnection,
 } from "../connections/connectionTabContextMenu";
 import { ftpBrowserCommands } from "../lib/fileBrowserCommands";
 import { RemoteDesktopWorkspace } from "../remote-desktop/RemoteDesktopWorkspace";
@@ -70,7 +69,7 @@ export function TabStrip() {
   }
 
   function handleTabContextMenu(tab: (typeof tabs)[number], event: ReactMouseEvent<HTMLElement>) {
-    if (!isConnectionTabContextMenuConnection(tab.connection) || tab.sshPortForwardSessionId) {
+    if (!tab.connection || tab.sshPortForwardSessionId) {
       return;
     }
 
