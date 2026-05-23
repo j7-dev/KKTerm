@@ -1,7 +1,6 @@
 import { connectionTypeForTab } from "../connections/utils";
 import {
   dispatchConnectionTabContextMenu,
-  isConnectionTabContextMenuConnection,
 } from "../connections/connectionTabContextMenu";
 import { ftpBrowserCommands } from "../lib/fileBrowserCommands";
 import { RemoteDesktopWorkspace } from "../remote-desktop/RemoteDesktopWorkspace";
@@ -70,7 +69,7 @@ export function TabStrip() {
   }
 
   function handleTabContextMenu(tab: (typeof tabs)[number], event: ReactMouseEvent<HTMLElement>) {
-    if (!isConnectionTabContextMenuConnection(tab.connection) || tab.sshPortForwardSessionId) {
+    if (!tab.connection || tab.sshPortForwardSessionId) {
       return;
     }
 
@@ -101,6 +100,19 @@ export function TabStrip() {
           <div
             className={tab.id === activeTabId ? "tab active" : "tab"}
             key={tab.id}
+            onAuxClick={(event) => {
+              if (event.button !== 1) {
+                return;
+              }
+              event.preventDefault();
+              event.stopPropagation();
+              closeTab(tab.id);
+            }}
+            onMouseDown={(event) => {
+              if (event.button === 1) {
+                event.preventDefault();
+              }
+            }}
             onContextMenu={(event) => handleTabContextMenu(tab, event)}
           >
             <button className="tab-button" onClick={() => activateTab(tab.id)} type="button">
