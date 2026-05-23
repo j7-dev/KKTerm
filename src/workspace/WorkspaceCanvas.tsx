@@ -100,6 +100,19 @@ export function TabStrip() {
           <div
             className={tab.id === activeTabId ? "tab active" : "tab"}
             key={tab.id}
+            onAuxClick={(event) => {
+              if (event.button !== 1) {
+                return;
+              }
+              event.preventDefault();
+              event.stopPropagation();
+              closeTab(tab.id);
+            }}
+            onMouseDown={(event) => {
+              if (event.button === 1) {
+                event.preventDefault();
+              }
+            }}
             onContextMenu={(event) => handleTabContextMenu(tab, event)}
           >
             <button className="tab-button" onClick={() => activateTab(tab.id)} type="button">
