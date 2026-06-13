@@ -336,7 +336,8 @@ export function ActivityRail({
       savedConnections.map((connection) => [connection.id, connection]),
     );
     const pinnedConnectionIds = generalSettings.pinnedConnectionIds ?? [];
-    const pinnedConnectionIdSet = new Set(pinnedConnectionIds);
+    // The rail only surfaces pinned Connections; connected-but-unpinned
+    // Sessions are controlled entirely by the Workspace Connection Tree.
     const pinnedItems: ConnectedRailItem[] = pinnedConnectionIds.flatMap((connectionId) => {
       const connection = savedConnectionById.get(connectionId);
       if (!connection) {
@@ -346,23 +347,7 @@ export function ActivityRail({
       return [{ connection, tabId, pinned: true }];
     });
 
-    const seenConnectionIds = new Set<string>();
-    pinnedItems.forEach((item) => seenConnectionIds.add(item.connection.id));
-    const items: ConnectedRailItem[] = generalSettings.showConnectedConnectionsInRail
-      ? tabs.flatMap((tab) => {
-          const connection = tab.connection;
-          if (
-            !connection ||
-            pinnedConnectionIdSet.has(connection.id) ||
-            seenConnectionIds.has(connection.id) ||
-            !activeSessionCounts[connection.id]
-          ) {
-            return [];
-          }
-          seenConnectionIds.add(connection.id);
-          return [{ connection, tabId: tab.id, pinned: false }];
-        })
-      : [];
+    const items: ConnectedRailItem[] = [];
 
     const itemByConnectionId = new Map(
       items.map((item) => [item.connection.id, item]),
@@ -378,10 +363,8 @@ export function ActivityRail({
 
     return [...pinnedItems, ...orderedItems, ...itemByConnectionId.values()];
   }, [
-    activeSessionCounts,
     connectionRailOrder,
     generalSettings.pinnedConnectionIds,
-    generalSettings.showConnectedConnectionsInRail,
     savedConnections,
     tabs,
   ]);

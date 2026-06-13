@@ -133,10 +133,6 @@ const SETTINGS_SECTIONS: Record<SettingsSectionId, SettingsSectionSummary> = {
     fallbackLabel: "Workspace",
     controls: [
       {
-        key: "settings.connectedConnectionsRail",
-        description: "Show or hide connected Connection icons on the Activity Rail.",
-      },
-      {
         key: "settings.hideTopTabButtons",
         description: "Enable Child Connection Tabs: hides the top Tab Strip and shows saved Child Connection Tabs under their parent Connections in the Connection Tree.",
       },

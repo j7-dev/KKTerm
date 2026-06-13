@@ -16,8 +16,7 @@ export function WorkspaceSettings() {
   const hasChanges =
     draft.hideTopTabButtons !== generalSettings.hideTopTabButtons ||
     draft.submitAiAttachmentsDirectly !== generalSettings.submitAiAttachmentsDirectly ||
-    draft.separateSplitTerminalBackgrounds !== generalSettings.separateSplitTerminalBackgrounds ||
-    draft.showConnectedConnectionsInRail !== generalSettings.showConnectedConnectionsInRail;
+    draft.separateSplitTerminalBackgrounds !== generalSettings.separateSplitTerminalBackgrounds;
 
   useEffect(() => {
     setDraft(generalSettings);
@@ -30,7 +29,6 @@ export function WorkspaceSettings() {
         ...currentSettings,
         hideTopTabButtons: draft.hideTopTabButtons,
         separateSplitTerminalBackgrounds: draft.separateSplitTerminalBackgrounds,
-        showConnectedConnectionsInRail: draft.showConnectedConnectionsInRail,
         submitAiAttachmentsDirectly: draft.submitAiAttachmentsDirectly,
       };
       const saved = isTauriRuntime()
@@ -56,24 +54,6 @@ export function WorkspaceSettings() {
         label={t("settings.sectionWorkspace")}
         title={t("settings.sectionWorkspace")}
       />
-      <fieldset className="settings-subsection settings-fieldset">
-        <legend>{t("settings.activityRail")}</legend>
-        <div className="settings-toggle-list">
-          <label className="settings-toggle-row">
-            <ToggleSwitch
-              checked={draft.showConnectedConnectionsInRail}
-              onChange={(checked) =>
-                setDraft((state) => ({ ...state, showConnectedConnectionsInRail: checked }))
-              }
-            />
-            <span>
-              <strong>{t("settings.connectedConnectionsRail")}</strong>
-              <small>{t("settings.connectedConnectionsRailHint")}</small>
-            </span>
-          </label>
-        </div>
-      </fieldset>
-
       <fieldset className="settings-subsection settings-fieldset">
         <legend>{t("settings.workspaceTabs")}</legend>
         <div className="settings-toggle-list">
